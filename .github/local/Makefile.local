@@ -1,0 +1,39 @@
+SRC_DIR        := src
+
+debuild: build
+
+.PHONY: pre_build_dep
+pre_build_dep:
+	sudo apt-get update
+	sudo apt-get install -y --no-install-recommends docker.io
+
+.PHONY: main_build
+main_build: build-qcom
+
+# ===== Qualcomm Snapdragon (Hexagon DSP) =====
+PKG_QCOM       := llama.cpp-qcom
+BUILD_QCOM     := $(SRC_DIR)/build-qcom
+INSTALL_QCOM   := $(SRC_DIR)/install-qcom
+DOCKER_QCOM    := ghcr.io/snapdragon-toolchain/arm64-linux:v0.1
+
+.PHONY: build-qcom
+build-qcom:
+	cp $(SRC_DIR)/docs/backend/snapdragon/CMakeUserPresets.json $(SRC_DIR)/
+	sed -i 's/"version": 5/"version": 4/' $(SRC_DIR)/CMakeUserPresets.json
+	# Create container and copy source (docker cp avoids Docker-in-Docker volume mount issue)
+	docker create --name qcom-build --platform linux/amd64 $(DOCKER_QCOM) \
+		/bin/bash -c ' \
+			set -euo pipefail; \
+			cd /workspace; \
+			cmake --preset arm64-linux-snapdragon-release -B build-qcom; \
+			cmake --build build-qcom -j $$(nproc); \
+			cmake --install build-qcom --prefix install-qcom \
+		'
+	docker cp $(SRC_DIR)/. qcom-build:/workspace/
+	docker start -a qcom-build
+	rm -rf $(INSTALL_QCOM)
+	docker cp qcom-build:/workspace/install-qcom/. $(INSTALL_QCOM)/
+	docker rm qcom-build
+	rm -rf $(PKG_QCOM)
+	mkdir -p $(PKG_QCOM)/usr
+	cp -a $(INSTALL_QCOM)/* $(PKG_QCOM)/usr/

@@ -10,11 +10,12 @@ Build-Depends: debhelper-compat (= 13),
                dh-exec,
                pandoc,
 
-Package: llama.cpp
+Package: llama.cpp-qcom
 Architecture: all
 Section: admin
 Priority: optional
 Depends: ${misc:Depends},
-Description: llama.cpp
- This package provides the llama.cpp.
+         fastrpc,
+Description: llama.cpp for Qualcomm Snapdragon
+ llama.cpp with Hexagon DSP backend for Qualcomm Snapdragon devices.
 

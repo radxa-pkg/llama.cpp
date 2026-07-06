@@ -1,0 +1,13 @@
+undeclared-elf-prerequisites
+pkg-config-unavailable-for-cross-compilation
+shared-library-lacks-version
+link-to-shared-library-in-wrong-package
+no-manual-page
+arch-independent-package-contains-binary-or-object
+lacks-ldconfig-trigger
+library-not-linked-against-libc
+no-shlibs
+shared-library-lacks-stack-section
+unstripped-binary-or-object
+package-name-doesnt-match-sonames
+missing-dependency-on-libc
