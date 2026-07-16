@@ -1,9 +1,9 @@
-llama.cpp (0.0.10034-1) UNRELEASED; urgency=medium
+llama.cpp (0.0.10034-1) unstable; urgency=medium
 
   [ Chongbiao Chen ]
   * chore: update submodule to b10034
 
- -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Thu, 16 Jul 2026 13:55:43 +0800
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Thu, 16 Jul 2026 09:06:13 +0000
 
 llama.cpp (0.0.9861-1) UNRELEASED; urgency=medium
 
